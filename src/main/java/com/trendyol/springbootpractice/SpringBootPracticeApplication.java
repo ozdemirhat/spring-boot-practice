@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-//@ComponentScan(basePackages = { "com.trendyol"} )
+@ComponentScan(basePackages = { "com.trendyol"} )
 public class SpringBootPracticeApplication {
 
 	public static void main(String[] args) {
