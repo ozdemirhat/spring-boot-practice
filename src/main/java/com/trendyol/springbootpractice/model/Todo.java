@@ -1,11 +1,15 @@
 package com.trendyol.springbootpractice.model;
 
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 public class Todo {
     private int id;
     private String user;
+
+    @Size(min = 10, message = "Enter at least 10 characters")
     private String desc;
+
     private Date targetDate;
     private boolean isDone;
 
@@ -17,6 +21,10 @@ public class Todo {
         this.desc = desc;
         this.targetDate = targetDate;
         this.isDone = isDone;
+    }
+
+    public Todo (){
+        super();
     }
 
     public int getId() {
