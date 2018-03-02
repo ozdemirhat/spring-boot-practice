@@ -6,7 +6,7 @@
 
 
 <body>
-Welcome!! ${name} , ${password}
+Welcome ${name} !! Click <a href="/list-todos"> here </a> to manage your todos.
 </body>
 
 
