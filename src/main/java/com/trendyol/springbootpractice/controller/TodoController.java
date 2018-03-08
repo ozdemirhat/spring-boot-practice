@@ -1,6 +1,7 @@
 package com.trendyol.springbootpractice.controller;
 
 
+import com.trendyol.springbootpractice.service.TodoRepository;
 import com.trendyol.springbootpractice.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -21,7 +22,7 @@ import java.util.Date;
 public class TodoController {
 
     @Autowired
-    TodoService todoService;
+    TodoRepository todoRepository;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
@@ -33,7 +34,7 @@ public class TodoController {
     @RequestMapping(value="/list-todos", method = RequestMethod.GET)
     public String showTodos(ModelMap model){
         String name = getLoggedInUsername();
-        model.put("todos", todoService.retrieveTodos(name));
+        model.put("todos", todoRepository.findByUser(name));
         return "list-todos";
     }
 
@@ -58,19 +59,21 @@ public class TodoController {
         if (result.hasErrors()){
             return "todo";
         }
-        todoService.addTodo(getLoggedInUsername(), todo.getDesc(), todo.getTargetDate(), false);
+
+        todo.setUser(getLoggedInUsername());
+        todoRepository.save(todo);
         return "redirect:/list-todos";
     }
 
     @RequestMapping(value="/delete-todo", method = RequestMethod.GET)
     public String deleteTodo(ModelMap model, @RequestParam int id){
-        todoService.deleteTodo(id);
+        todoRepository.deleteById(id);
         return "redirect:/list-todos";
     }
 
     @RequestMapping(value="/update-todo", method = RequestMethod.GET)
     public String showUpdateTodoPage (ModelMap model, @RequestParam int id){
-        Todo todo = todoService.retrieveTodo(id);
+        Todo todo = todoRepository.findById(id).get();
         model.put("todo", todo);
         return "todo";
     }
@@ -82,7 +85,7 @@ public class TodoController {
             return "todo";
         }
         todo.setUser(getLoggedInUsername());
-        todoService.updateTodo(todo);
+        todoRepository.save(todo);
         return "redirect:/list-todos";
     }
 
